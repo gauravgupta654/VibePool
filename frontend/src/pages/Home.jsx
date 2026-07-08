@@ -2,18 +2,25 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.css';
 import { MapPin, Navigation, ShieldCheck } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const Home = () => {
   const [pickup, setPickup] = useState('');
   const [dropoff, setDropoff] = useState('');
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   const handleSeePrices = () => {
     const params = new URLSearchParams();
     if (pickup) params.append('pickup', pickup);
     if (dropoff) params.append('dropoff', dropoff);
     
-    navigate(`/map?${params.toString()}`);
+    if (isAuthenticated) {
+      navigate(`/map?${params.toString()}`);
+    } else {
+      // Not logged in -> show onboarding
+      navigate('/onboarding');
+    }
   };
 
   return (

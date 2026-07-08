@@ -65,7 +65,7 @@ const sendOtpEmail = async (toEmail, otpCode) => {
   };
 
   // Mock sending if credentials are not configured
-  if (process.env.EMAIL_USER === 'your-gmail@gmail.com') {
+  if (process.env.EMAIL_USER === 'your-gmail@gmail.com' || !process.env.EMAIL_USER) {
     console.log(`\n==================================================`);
     console.log(`MOCK OTP EMAIL SENT TO: ${toEmail}`);
     console.log(`OTP CODE: ${otpCode}`);
@@ -83,4 +83,60 @@ const sendOtpEmail = async (toEmail, otpCode) => {
   }
 };
 
-module.exports = { sendOtpEmail };
+const sendRideConfirmation = async (userEmail, rideDetails, driverDetails) => {
+  // Mock sending if credentials are not configured
+  if (process.env.EMAIL_USER === 'your-gmail@gmail.com' || !process.env.EMAIL_USER) {
+    console.log(`\n==================================================`);
+    console.log(`MOCK RIDE CONFIRMATION EMAIL SENT TO: ${userEmail}`);
+    console.log(`Driver: ${driverDetails.name} | Vehicle: ${rideDetails.rideType}`);
+    console.log(`==================================================\n`);
+    return true;
+  }
+
+  try {
+    const htmlContent = `
+      <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; border-radius: 10px;">
+        <h2 style="color: #3b82f6; text-align: center;">Your VibePool Ride is Booked! 🚗</h2>
+        <p style="font-size: 16px; color: #333;">Hi there,</p>
+        <p style="font-size: 16px; color: #333;">Great news! Your <strong>${rideDetails.rideType}</strong> has been confirmed and your driver is on the way to pick you up.</p>
+        
+        <div style="background-color: #fff; padding: 15px; border-radius: 8px; margin: 20px 0; border: 1px solid #e5e7eb;">
+          <h3 style="margin-top: 0; color: #1f2937;">Driver Details</h3>
+          <p style="margin: 5px 0; color: #4b5563;"><strong>Name:</strong> ${driverDetails.name}</p>
+          <p style="margin: 5px 0; color: #4b5563;"><strong>Phone:</strong> ${driverDetails.mobile}</p>
+          <p style="margin: 5px 0; color: #4b5563;"><strong>DL Number:</strong> ${driverDetails.dl}</p>
+        </div>
+
+        <div style="background-color: #fff; padding: 15px; border-radius: 8px; margin: 20px 0; border: 1px solid #e5e7eb;">
+          <h3 style="margin-top: 0; color: #1f2937;">Trip Summary</h3>
+          <p style="margin: 5px 0; color: #4b5563;"><strong>Pickup:</strong> ${rideDetails.pickupAddress}</p>
+          <p style="margin: 5px 0; color: #4b5563;"><strong>Destination:</strong> ${rideDetails.dropoffAddress}</p>
+          <p style="margin: 5px 0; color: #4b5563;"><strong>Estimated Fare:</strong> ₹${rideDetails.price}</p>
+        </div>
+
+        <p style="font-size: 14px; color: #6b7280; text-align: center; margin-top: 30px;">Thank you for riding with VibePool!</p>
+      </div>
+    `;
+
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: `"VibePool Rides" <${process.env.EMAIL_USER}>`, // sender address
+      to: userEmail, // actual receiver's registered email
+      subject: "🚗 Ride Confirmed: Driver is on the way!", // Subject line
+      html: htmlContent, // html body
+    });
+
+    console.log("==========================================");
+    console.log("📧 E-MAIL SENT SUCCESSFULLY TO:", userEmail);
+    console.log("Message ID: %s", info.messageId);
+    console.log("==========================================");
+    
+    return true;
+  } catch (error) {
+    console.error("Error sending email:", error);
+    console.error("Make sure EMAIL_USER and EMAIL_PASS are set in backend/.env");
+    return false;
+  }
+};
+
+module.exports = { sendOtpEmail, sendRideConfirmation };

@@ -1,0 +1,46 @@
+{
+  "Delhi": [
+    { "id": 1, "name": "Aarav Sharma", "mobile": "+91 98765 43210", "dl": "DL-1420210084721" },
+    { "id": 6, "name": "Kabir Kapoor", "mobile": "+91 94445 55666", "dl": "DL-0320170014523" }
+  ],
+  "Maharashtra": [
+    { "id": 2, "name": "Rohan Verma", "mobile": "+91 91234 56789", "dl": "MH-1220190035412" },
+    { "id": 5, "name": "Kshitij Deshmukh", "mobile": "+91 70123 45678", "dl": "MH-0220200056192" },
+    { "id": 17, "name": "Tejas Kulkarni", "mobile": "+91 91111 22233", "dl": "MH-1420220071624" }
+  ],
+  "Karnataka": [
+    { "id": 3, "name": "Aditya Malhotra", "mobile": "+91 88888 77766", "dl": "KA-0320220091843" },
+    { "id": 14, "name": "Shreyas Iyer", "mobile": "+91 89999 01234", "dl": "KA-5120170029384" }
+  ],
+  "Haryana": [
+    { "id": 4, "name": "Ishaan Joshi", "mobile": "+91 96543 21098", "dl": "HR-2620180027364" },
+    { "id": 15, "name": "Yash Vardhan", "mobile": "+91 95556 66777", "dl": "HR-0520230048172" }
+  ],
+  "Uttar Pradesh": [
+    { "id": 7, "name": "Vivaan Mehra", "mobile": "+91 81234 98765", "dl": "UP-1620230074839" },
+    { "id": 16, "name": "Anshuman Pandey", "mobile": "+91 74000 11122", "dl": "UP-3220190093847" }
+  ],
+  "Gujarat": [
+    { "id": 8, "name": "Arjun Singhania", "mobile": "+91 90000 12345", "dl": "GJ-0120210049281" },
+    { "id": 19, "name": "Parth Trivedi", "mobile": "+91 97777 66655", "dl": "GJ-0320180029481" }
+  ],
+  "Punjab": [
+    { "id": 9, "name": "Reyansh Goel", "mobile": "+91 77777 88888", "dl": "PB-1020190038172" }
+  ],
+  "Rajasthan": [
+    { "id": 10, "name": "Ayaan Rajput", "mobile": "+91 85555 44433", "dl": "RJ-1420220062941" }
+  ],
+  "Madhya Pradesh": [
+    { "id": 11, "name": "Devansh Saxena", "mobile": "+91 93333 22211", "dl": "MP-0420180019482" }
+  ],
+  "Bihar": [
+    { "id": 12, "name": "Atharv Choudhary", "mobile": "+91 92109 87654", "dl": "BR-0120200053729" }
+  ],
+  "West Bengal": [
+    { "id": 13, "name": "Rudra Mishra", "mobile": "+91 76666 55544", "dl": "WB-0220210082314" },
+    { "id": 20, "name": "Ritvik Sen", "mobile": "+91 84444 99911", "dl": "WB-2620210051627" }
+  ],
+  "Kerala": [
+    { "id": 18, "name": "Dhruv Nair", "mobile": "+91 82222 33344", "dl": "KL-0120200038471" }
+  ]
+}

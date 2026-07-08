@@ -1,17 +1,28 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Car, User, X, Mail, Lock, Phone, UserCircle, LogOut, Loader2, ArrowLeft } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Car, User, X, Mail, Lock, Phone, UserCircle, LogOut, Loader2, ArrowLeft, Search, MapPin } from 'lucide-react';
+import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { useLocationContext } from '../context/LocationContext';
+import logoImg from '../assets/vibepool_logo.png';
 import './Navbar.css';
 
 const Navbar = () => {
   const { user, isAuthenticated, signup, login, verifyOtp, resendOtp, logout } = useAuth();
+  const { selectedCityName, setSelectedCityName, setSelectedCityCoords } = useLocationContext();
+  const routeLocation = useLocation();
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [authView, setAuthView] = useState('login'); // 'login' | 'signup' | 'otp'
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // City Search State
+  const [cityQuery, setCityQuery] = useState(selectedCityName);
+  const [cityResults, setCityResults] = useState([]);
+  const [isSearchingCity, setIsSearchingCity] = useState(false);
+  const citySearchTimeoutRef = useRef(null);
   
   // Form fields
   const [formData, setFormData] = useState({
@@ -34,6 +45,17 @@ const Navbar = () => {
       return () => clearTimeout(timer);
     }
   }, [resendCooldown]);
+
+  // Listen for custom event to open modal from other components (like Onboarding)
+  useEffect(() => {
+    const handleOpenModal = (e) => {
+      const view = e.detail?.view || 'login';
+      openModal(view);
+    };
+    
+    window.addEventListener('open-auth-modal', handleOpenModal);
+    return () => window.removeEventListener('open-auth-modal', handleOpenModal);
+  }, []);
 
   const resetForm = () => {
     setFormData({ name: '', email: '', password: '', phone: '' });
@@ -193,15 +215,81 @@ const Navbar = () => {
     }
   };
 
+  // City search handler
+  const handleCitySearch = async (query) => {
+    setCityQuery(query);
+    if (!query || query.length < 2) {
+      setCityResults([]);
+      return;
+    }
+    try {
+      setIsSearchingCity(true);
+      const res = await axios.get(`http://localhost:5000/api/geocode?q=${encodeURIComponent(query)}&featuretype=city`);
+      setCityResults(res.data);
+    } catch (err) {
+      console.error("City search error", err);
+    } finally {
+      setIsSearchingCity(false);
+    }
+  };
+
+  const handleSelectCity = (place) => {
+    const coords = [parseFloat(place.lon), parseFloat(place.lat)];
+    const displayName = place.display_name.split(',')[0]; // Just take the city name part
+    
+    setCityQuery(displayName);
+    setSelectedCityName(displayName);
+    setSelectedCityCoords(coords);
+    setCityResults([]);
+  };
+
+  // Hide the city search if not on the map page, if desired, but user approved showing everywhere.
+  // Actually, showing it everywhere is fine.
+
   return (
     <>
       <nav className="glass-navbar">
         <div className="navbar-brand">
           <Link to="/" className="logo">
-            <Car size={28} className="logo-icon" />
+            <img src={logoImg} alt="VibePool Logo" className="logo-icon-img" style={{ height: '32px', width: 'auto', borderRadius: '4px' }} />
             <span>VibePool</span>
           </Link>
         </div>
+        
+        {isAuthenticated && (
+          <div className="navbar-city-search">
+            <div className="city-search-wrapper">
+              <MapPin size={18} className="city-search-icon" />
+              <input 
+                type="text" 
+                placeholder="Select your city..."
+                value={cityQuery}
+                onChange={(e) => {
+                  setCityQuery(e.target.value);
+                  if (citySearchTimeoutRef.current) clearTimeout(citySearchTimeoutRef.current);
+                  citySearchTimeoutRef.current = setTimeout(() => {
+                    handleCitySearch(e.target.value);
+                  }, 600);
+                }}
+                onFocus={(e) => e.target.select()}
+              />
+              {isSearchingCity && <Loader2 size={16} className="spin city-loading-icon" />}
+            </div>
+            
+            {cityResults.length > 0 && (
+              <div className="city-dropdown glass-panel">
+                {cityResults.map((res) => (
+                  <div key={res.place_id} className="city-dropdown-item" onClick={() => handleSelectCity(res)}>
+                    <MapPin size={16} />
+                    <span>{res.display_name.split(',')[0]}</span>
+                    <span className="city-state">{res.display_name.split(',').slice(1).join(',')}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="navbar-links">
           <Link to="/map" className="nav-link">Ride</Link>
           <Link to="/drive" className="nav-link">Drive</Link>

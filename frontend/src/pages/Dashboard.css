@@ -22,6 +22,7 @@
   top: 24px;
   left: 24px;
   width: 400px;
+  max-height: calc(100vh - 120px); /* Constrain sidebar height to fit screen */
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -42,6 +43,26 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  overflow-y: auto; /* Allow the entire sidebar content to scroll */
+}
+
+/* Custom Scrollbar for the Sidebar Content */
+.sidebar-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .location-inputs {
@@ -139,11 +160,102 @@
   border-bottom: none;
 }
 
+/* Ride Options UI */
+.ride-options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ride-options-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ride-options-header h3 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.distance-badge {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ride-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ride-option-card {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ride-option-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.ride-option-card.active {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+}
+
+.ride-icon-wrapper {
+  margin-right: 16px;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.ride-option-card.active .ride-icon-wrapper {
+  color: var(--primary-color);
+}
+
+.ride-details {
+  flex: 1;
+}
+
+.ride-details h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--text-main);
+}
+
+.ride-time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.ride-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
 .request-btn {
   width: 100%;
   padding: 16px;
   font-size: 16px;
   margin-top: auto;
+  flex-shrink: 0; /* Prevent button from shrinking */
 }
 
 .request-btn.disabled {
@@ -178,4 +290,113 @@
     position: relative;
     height: 50vh;
   }
+}
+
+/* Driver Details UI */
+.driver-details-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--primary-color);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+}
+
+.driver-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 12px;
+}
+
+.driver-header h3 {
+  font-size: 18px;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.eta-badge {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.driver-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.driver-avatar {
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-main);
+}
+
+.driver-info {
+  flex: 1;
+}
+
+.driver-info h4 {
+  font-size: 18px;
+  margin: 0 0 4px 0;
+  color: var(--text-main);
+}
+
+.driver-dl {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+  font-family: monospace;
+}
+
+.driver-rating {
+  background: rgba(250, 204, 21, 0.2);
+  color: #facc15;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.driver-contact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+.vehicle-info {
+  font-size: 14px;
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.vehicle-info span {
+  color: var(--text-muted);
 }
