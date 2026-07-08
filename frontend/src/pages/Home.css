@@ -1,0 +1,144 @@
+.home-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.hero-section {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, rgba(37, 99, 235, 0.15) 0%, transparent 60%);
+  padding: 40px;
+}
+
+.hero-content {
+  width: 100%;
+  max-width: 500px;
+  padding: 40px;
+}
+
+.hero-content h1 {
+  font-size: 42px;
+  margin-bottom: 12px;
+}
+
+.hero-content p {
+  color: var(--text-muted);
+  margin-bottom: 32px;
+  font-size: 18px;
+}
+
+.location-inputs {
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.input-row:last-child {
+  margin-bottom: 0;
+}
+
+.icon-wrapper {
+  width: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.dot-inner {
+  width: 8px;
+  height: 8px;
+  background-color: var(--text-main);
+  border-radius: 50%;
+}
+
+.square-inner {
+  width: 8px;
+  height: 8px;
+  background-color: var(--text-main);
+}
+
+.connector {
+  position: absolute;
+  left: 44px;
+  top: 52px;
+  height: 24px;
+  width: 2px;
+  background-color: var(--glass-border);
+  z-index: 0;
+}
+
+.location-inputs input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-main);
+  font-size: 16px;
+  width: 100%;
+}
+
+.location-inputs input::placeholder {
+  color: var(--text-muted);
+}
+
+.see-prices-btn {
+  width: 100%;
+  font-size: 18px;
+  padding: 16px;
+}
+
+.features-section {
+  padding: 80px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.features-section h2 {
+  font-size: 32px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.feature-card {
+  padding: 32px;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.feature-icon {
+  color: var(--accent-color);
+  margin-bottom: 20px;
+}
+
+.feature-card h3 {
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+.feature-card p {
+  color: var(--text-muted);
+  line-height: 1.6;
+}

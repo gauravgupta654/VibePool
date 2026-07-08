@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  password   String
+  role       Role     @default(RIDER)
+  phone      String?
+  isVerified Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  // Relations
+  ridesAsRider  Ride[] @relation("RiderRides")
+  ridesAsDriver Ride[] @relation("DriverRides")
+}
+
+model Otp {
+  id        String   @id @default(uuid())
+  email     String
+  code      String
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}
+
+model Ride {
+  id          String   @id @default(uuid())
+  riderId     String
+  driverId    String?
+  pickupLat   Float
+  pickupLng   Float
+  dropLat     Float
+  dropLng     Float
+  status      RideStatus @default(PENDING)
+  price       Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  rider       User     @relation("RiderRides", fields: [riderId], references: [id])
+  driver      User?    @relation("DriverRides", fields: [driverId], references: [id])
+}
+
+enum Role {
+  RIDER
+  DRIVER
+}
+
+enum RideStatus {
+  PENDING
+  ACCEPTED
+  ARRIVING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
